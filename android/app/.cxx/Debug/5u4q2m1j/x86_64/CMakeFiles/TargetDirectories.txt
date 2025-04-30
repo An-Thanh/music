@@ -1,0 +1,2 @@
+D:/mobile/music_recog/music_recog/android/app/.cxx/Debug/5u4q2m1j/x86_64/CMakeFiles/edit_cache.dir
+D:/mobile/music_recog/music_recog/android/app/.cxx/Debug/5u4q2m1j/x86_64/CMakeFiles/rebuild_cache.dir
