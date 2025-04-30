@@ -276,7 +276,8 @@ class _MyHomePageState extends State<MyHomePage>
                   Color(0xFF1DB954), // Spotify Green
                   Color(0xFF1DB960),
                   Color(0xFF1DB990),
-                  Color(0xFF191414), // Spotify Black
+                  Color.fromARGB(255, 61, 159, 133),
+                  Color.fromARGB(255, 49, 99, 89), // Spotify Black
                 ],
               ),
             ),
@@ -286,125 +287,96 @@ class _MyHomePageState extends State<MyHomePage>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      if (_isRecognizing)
-                        ...List.generate(3, (i) {
-                          return AnimatedBuilder(
-                            animation: _waveController,
-                            builder: (context, child) {
-                              final value =
-                                  (_waveController.value + i * 0.33) % 1.0;
-                              return Opacity(
-                                opacity: 1 - value,
-                                child: Container(
-                                  width: 140 + value * 200,
-                                  height: 140 + value * 200,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color.fromARGB(255, 0, 219, 77)
+                      SizedBox(
+                        height: 300,
+                        width: 300,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            if (_isRecognizing)
+                              ...List.generate(3, (i) {
+                                return AnimatedBuilder(
+                                  animation: _waveController,
+                                  builder: (context, child) {
+                                    final value = (_waveController.value +
+                                            (2 - i) * 0.33) %
+                                        1.0;
+                                    return Opacity(
+                                      opacity: 1 - value,
+                                      child: Container(
+                                        width: 140 + value * 200,
+                                        height: 140 + value * 200,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromARGB(
+                                                255, 0, 98, 34)),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }),
+                            GestureDetector(
+                              onTap: () {
+                                if (!_isRecognizing) {
+                                  _startRecognition();
+                                } else {
+                                  _stopRecognition();
+                                }
+                              },
+                              child: Container(
+                                width: 140,
+                                height: 140,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFF1DB954),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color.fromARGB(255, 58, 48, 48),
+                                      Color(0xFF1DB960),
+                                      Color(0xFF1DB954),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(10, 10),
+                                      color: Colors.black38,
+                                      blurRadius: 24,
+                                      spreadRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.mic,
+                                    color: Colors.white,
+                                    size: 80,
                                   ),
                                 ),
-                              );
-                            },
-                          );
-                        }),
-                      GestureDetector(
-                        onTap: () {
-                          if (!_isRecognizing) {
-                            _startRecognition();
-                          } else {
-                            _stopRecognition();
-                          }
-                        },
-                        child: Container(
-                          width: 140,
-                          height: 140,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFF1DB954),
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color.fromARGB(255, 58, 48, 48),
-                                Color(0xFF1DB960),
-                                Color(0xFF1DB954),
-                              ],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(10, 10),
-                                color: Colors.black38,
-                                blurRadius: 24,
-                                spreadRadius: 4,
                               ),
-                            ],
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.speaker,
-                              color: Colors.white,
-                              size: 64,
                             ),
-                          ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Text(
+                        _result,
+                        key: ValueKey(_result),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.white,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 400),
-                    child: Text(
-                      _result,
-                      key: ValueKey(_result),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  // if (!_isRecognizing)
-                  //   ElevatedButton.icon(
-                  //     onPressed: _startRecognition,
-                  //     icon: const Icon(Icons.mic),
-                  //     label: const Text('Bắt đầu nhận dạng'),
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: const Color(0xFF1DB954),
-                  //       foregroundColor: Colors.white,
-                  //       padding: const EdgeInsets.symmetric(
-                  //           horizontal: 24, vertical: 12),
-                  //       textStyle: const TextStyle(fontSize: 16),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(16),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // if (_isRecognizing)
-                  //   Column(
-                  //     children: [
-                  //       const SizedBox(height: 16),
-                  //       ElevatedButton.icon(
-                  //         onPressed: _stopRecognition,
-                  //         icon: const Icon(Icons.stop),
-                  //         label: const Text('Dừng nhận dạng'),
-                  //         style: ElevatedButton.styleFrom(
-                  //           backgroundColor: Colors.red,
-                  //           foregroundColor: Colors.white,
-                  //           padding: const EdgeInsets.symmetric(
-                  //               horizontal: 24, vertical: 12),
-                  //           textStyle: const TextStyle(fontSize: 16),
-                  //           shape: RoundedRectangleBorder(
-                  //             borderRadius: BorderRadius.circular(16),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 32),
                   _buildSpotifyResults(),
                 ],
               ),
